@@ -1,69 +1,128 @@
 import { useState } from 'react'
+import Sidebar from '../components/Sidebar'
 import ChangePasswordModal from '../components/ChangePasswordModal'
+import { LineChart, BarChart } from '../components/Charts'
 
 export default function AdminDashboard() {
-  const [items, setItems] = useState([
-    { id: 1, name: 'Laptop', quantity: 10, price: 50000 },
-    { id: 2, name: 'Mouse', quantity: 50, price: 250 },
-    { id: 3, name: 'Keyboard', quantity: 30, price: 800 }
-  ])
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
+  const stats = {
+    totalUsers: 2,
+    totalProducts: 2,
+    totalTransactions: 3
+  }
+
+  const recentActivity = [
+    {
+      id: 'AL-1',
+      type: 'Import',
+      user: 'Alan Walker',
+      date: 'April 25, 2026',
+      description: "Alan Walker has imported product 'Laptop Dell XPS 15' into inventory"
+    }
+  ]
+
+  const transactionTrendData = [30, 45, 35, 60, 50, 55]
+  const importExportData = [
+    [50, 35, 55, 45, 60, 40],
+    [35, 50, 40, 60, 45, 65]
+  ]
+
   return (
-    <div className="container dashboard">
-      <h1>Admin Dashboard</h1>
+    <div className="dashboard-layout">
+      <Sidebar userRole="admin" />
       
-      <div className="dashboard-content">
-        <div className="dashboard-top">
-          <button 
-            className="btn-change-password"
-            onClick={() => setIsPasswordModalOpen(true)}
-          >
-            Change Password
-          </button>
-        </div>
-
-        <div className="stats-grid">
-          <div className="stat-card">
-            <h3>Total Items</h3>
-            <p className="stat-number">{items.length}</p>
+      <main className="dashboard-main">
+        <div className="dashboard-header">
+          <div className="header-breadcrumb">
+            <a href="#" className="breadcrumb-link">Home</a>
+            <span className="breadcrumb-separator">›</span>
+            <span>Dashboard</span>
           </div>
-          <div className="stat-card">
-            <h3>Total Quantity</h3>
-            <p className="stat-number">{items.reduce((sum, item) => sum + item.quantity, 0)}</p>
-          </div>
-          <div className="stat-card">
-            <h3>Total Value</h3>
-            <p className="stat-number">${items.reduce((sum, item) => sum + (item.quantity * item.price), 0).toLocaleString()}</p>
+          <div className="header-content">
+            <h1>Dashboard - Admin</h1>
+            <p>Overview of your inventory operations</p>
           </div>
         </div>
 
-        <div className="inventory-section">
-          <h2>Inventory Items</h2>
-          <table className="inventory-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map(item => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>${item.price}</td>
-                  <td>${(item.quantity * item.price).toLocaleString()}</td>
+        <div className="dashboard-container">
+          <div className="dashboard-top">
+            <button 
+              className="btn-change-password"
+              onClick={() => setIsPasswordModalOpen(true)}
+            >
+              Change Password
+            </button>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-icon users">👤</div>
+              <div className="stat-info">
+                <p className="stat-number">{stats.totalUsers}</p>
+                <p className="stat-label">Total Users</p>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon products">📦</div>
+              <div className="stat-info">
+                <p className="stat-number">{stats.totalProducts}</p>
+                <p className="stat-label">Total Products</p>
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon transactions">📊</div>
+              <div className="stat-info">
+                <p className="stat-number">{stats.totalTransactions}</p>
+                <p className="stat-label">Total Transactions</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Charts */}
+          <div className="charts-grid">
+            <div className="chart-card">
+              <h3>Transactions trend</h3>
+              <LineChart data={transactionTrendData} />
+            </div>
+            <div className="chart-card">
+              <h3>Import vs Export</h3>
+              <BarChart data={importExportData} />
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          <div className="activity-section">
+            <div className="activity-header">
+              <h2>Recent Activity</h2>
+              <a href="#" className="view-more">View more</a>
+            </div>
+            <table className="activity-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Type</th>
+                  <th>User</th>
+                  <th>Date</th>
+                  <th>Description</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {recentActivity.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td><span className="badge">{item.type}</span></td>
+                    <td>{item.user}</td>
+                    <td>{item.date}</td>
+                    <td>{item.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      </main>
 
       <ChangePasswordModal 
         isOpen={isPasswordModalOpen} 
