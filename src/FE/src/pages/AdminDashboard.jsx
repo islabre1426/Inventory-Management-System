@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ChangePasswordModal from '../components/ChangePasswordModal'
 
 export default function AdminDashboard() {
   const [items, setItems] = useState([
@@ -6,12 +7,22 @@ export default function AdminDashboard() {
     { id: 2, name: 'Mouse', quantity: 50, price: 250 },
     { id: 3, name: 'Keyboard', quantity: 30, price: 800 }
   ])
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
   return (
     <div className="container dashboard">
       <h1>Admin Dashboard</h1>
       
       <div className="dashboard-content">
+        <div className="dashboard-top">
+          <button 
+            className="btn-change-password"
+            onClick={() => setIsPasswordModalOpen(true)}
+          >
+            Change Password
+          </button>
+        </div>
+
         <div className="stats-grid">
           <div className="stat-card">
             <h3>Total Items</h3>
@@ -53,6 +64,11 @@ export default function AdminDashboard() {
           </table>
         </div>
       </div>
+
+      <ChangePasswordModal 
+        isOpen={isPasswordModalOpen} 
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   )
 }

@@ -49,7 +49,7 @@ export default function Login() {
           <div className="form-group">
             <div className="form-group-header">
               <label htmlFor="password">Password</label>
-              <a href="#" className="forgot-password">Forgot your password?</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); navigate('/forgot-password'); }} className="forgot-password">Forgot your password?</a>
             </div>
             <input
               type="password"
