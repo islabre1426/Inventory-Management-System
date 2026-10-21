@@ -1,7 +1,5 @@
-const BASE_URL = 'http://localhost:8080';
-
 export default async function fetchApi(endpoint, method, body = null) {
-    const response = await fetch(`${BASE_URL}/api${endpoint}`, {
+    const response = await fetch(`/api${endpoint}`, {
         method: method,
         headers: { 'Content-Type': 'application/json', },
         credentials: 'include', // Attach session to every request
