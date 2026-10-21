@@ -1,0 +1,8 @@
+.git
+.github
+.vscode
+.mvn
+target
+**/node_modules
+**/dist
+.env
